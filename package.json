@@ -1,0 +1,19 @@
+{
+  "name": "tennis-notes-quotes-api",
+  "version": "1.0.0",
+  "description": "MEN RESTful API for Tennis related quotes.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jozsef Adam Punk",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cross-env": "^7.0.3",
+    "dotenv-flow": "^3.2.0",
+    "express": "^4.18.2",
+    "mongodb": "^4.13.0",
+    "mongoose": "^6.9.0"
+  }
+}
