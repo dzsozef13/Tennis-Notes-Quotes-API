@@ -13,14 +13,11 @@ const port = process.env.PORT || 4000;
 const dbHost = process.env.DBHOST;
 
 app.listen(port, function() {
-    console.log("Server is running at " + port);
+    console.log("Server is running at: " + port);
 })
 
-/*
-    /test
-*/
-app.get("/test", (req, res) => {
-    res.status(200).send({message: "Test GET request run successfully."})
+app.get("/api/welcome", (req, res) => {
+    res.status(200).send({message: "Welcome to Tennis Notes API"});
 });
 
 mongoose.set('strictQuery', true);

@@ -16,6 +16,6 @@ let blogpostSchema = new Schema(
         author: { type: String },
         date: { type: Date, default: Date.now },
     }
-)
+);
 
 module.exports = mongoose.model("blogpost", blogpostSchema);
