@@ -6,7 +6,7 @@
  */
 
 const router = require('express').Router();
-const user = require('../models/user');
+const user = require('../../model/userSchema');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -34,6 +34,7 @@ router.post('/register', async (req, res) => {
         email: req.body.email,
         password: hashedPassword
     });
+
     try {
         const savedUser = await newUser.save();
         res.send(savedUser);
@@ -65,4 +66,5 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ _id: currentUser._id }, process.env.TOKEN_SECRET);
     res.header('auth-token', token).send(token);
 });  
-  
+
+module.exports = router;

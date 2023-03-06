@@ -12,6 +12,16 @@ require("dotenv-flow").config();
 const port = process.env.PORT || 4000;
 const dbHost = process.env.DBHOST;
 
+// Routes
+
+const authRoutes = require("./routes/auth/auth");
+// const blogpostRoutes = require("./routes/blogpost/blogpost");
+// const quoteRoutes = require("./routes/quote/quote");
+
+app.use("/auth", authRoutes);
+// app.use("/blogpost", blogpostRoutes);
+// app.use("/quote", quoteRoutes);
+
 app.listen(port, function() {
     console.log("Server is running at: " + port);
 })
