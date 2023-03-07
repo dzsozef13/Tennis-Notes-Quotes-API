@@ -3,6 +3,8 @@
  * 
  * - Content
  * - Author
+ * - Appears
+ * - CreatedAt
  */
 
 const mongoose = require('mongoose');

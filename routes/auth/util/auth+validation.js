@@ -1,6 +1,5 @@
 const Joi = require('joi');
 
-// validating registration
 const registerValidation = (data) => {
     const schema = Joi.object( 
         {
@@ -12,7 +11,6 @@ const registerValidation = (data) => {
     return schema.validate(data);
 }
 
-// validating login
 const loginValidation = (data) => {
     const schema = Joi.object(
         {

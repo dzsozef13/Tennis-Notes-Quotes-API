@@ -2,43 +2,57 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
-// App
 const app = express();
 
-//swagger
-const swaggerUi = require('swagger-ui-express');
-const yaml = require('yamljs');
-
-const swaggerDefinition = yaml.load('./swagger.yaml');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
-
-require("dotenv-flow").config();
-
+/**
+ * Body Parser
+ */
 app.use(bodyParser.json());
 
-// Port
+/**
+ * Environment
+ * 
+ * - PORT
+ * - DBHOST
+ */
+require("dotenv-flow").config();
 const port = process.env.PORT || 4000;
 const dbHost = process.env.DBHOST;
 
-// Routes
+/**
+ * Server Status
+ */
+app.listen(port, function() {
+    console.log("Server is running at: " + port);
+})
 
+/**
+ * Endpoints
+ * 
+ * - /routes/auth/auth
+ * - /routes/quote/quote
+ */
 const authRoutes = require("./routes/auth/auth");
 const quoteRoutes = require("./routes/quote/quote");
 
 app.use("/auth", authRoutes);
 app.use("/quote", quoteRoutes);
 
-app.listen(port, function() {
-    console.log("Server is running at: " + port);
-})
+/**
+ * Swagger Config
+ * 
+ * Endpoint
+ * - /api-docs
+ */
+const swaggerUi = require('swagger-ui-express');
+const yaml = require('yamljs');
+const swaggerDefinition = yaml.load('./swagger.yaml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
-app.get("/api/welcome", (req, res) => {
-    res.status(200).send({message: "Welcome to Tennis Notes API"});
-});
-
+/**
+ * MongoDB Connection
+ */
 mongoose.set('strictQuery', true);
-
-// Mongoose Connect
 mongoose.connect(
     dbHost,
     {
@@ -46,7 +60,6 @@ mongoose.connect(
         useNewUrlParser: true
     }
 ).catch(error => console.log("Failed to connect to MongoDB with error: " + error));
-
 mongoose.connection.once("open", () => console.log("Connected to MongoDB."));
 
 module.exports = app;

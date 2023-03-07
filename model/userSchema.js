@@ -4,7 +4,7 @@
  * - Name
  * - Email
  * - Password
- * - Date
+ * - CreatedAt
  */
 
 const mongoose = require('mongoose');

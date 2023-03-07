@@ -13,9 +13,11 @@ const quote = require('../../model/quoteSchema');
 const { verifyToken } = require('../util/route+verifyToken');
 const { mapQuote, mapQuotes } = require('./util/quote+mapper');
 
-/* 
-    / (create)
-*/
+/**
+ * Create Quote
+ * 
+ * POST - /
+ */
 router.post("/", verifyToken, (req, res) => {
     data = req.body;
 
@@ -28,22 +30,26 @@ router.post("/", verifyToken, (req, res) => {
     })
 });
 
-/* 
-    / (get all)
-*/
+/**
+ * All Quotes
+ * 
+ * GET - /
+ */
 router.get("/", (req, res) => {   
     quote.find()
     .then(data => { 
-        res.send(mapQuotes(data)) 
+        res.send(mapQuotes(data))
     })
     .catch (err => { 
         res.status(500).send({ message: err.message })
     })
 });
 
-/* 
-    /current
-*/
+/**
+ * Current Quote
+ * 
+ * GET - /current
+ */
 router.get("/current", (req, res) => {
     quote.findOneAndUpdate({}, { $inc: { appears: 1 } }, { sort: { createdAt: -1 }, new: true })
     .then(data => {
@@ -57,9 +63,11 @@ router.get("/current", (req, res) => {
     });
 });
 
-/* 
-    / (get by author)
-*/
+/**
+ * Quote by Author
+ * 
+ * GET - /author/:author
+ */
 router.get("/author/:author", (req, res) => {
     const author = req.params.author;
     const pattern = new RegExp(author, 'i');
@@ -76,14 +84,16 @@ router.get("/author/:author", (req, res) => {
     })
 });
 
-/* 
-    / (update by id)
-*/
+/**
+ * Update Quote
+ * 
+ * PUT - /:id
+ */
 router.put("/:id", verifyToken, (req, res) => {   
     const id = req.params.id;
 
     quote.findByIdAndUpdate(id, req.body)
-    .then(data => { 
+    .then(data => {
         if (!data) {
             res.status(404).send({ message: "Could not find quote with id: " + id });
         }
@@ -96,10 +106,12 @@ router.put("/:id", verifyToken, (req, res) => {
     })
 });
 
-/* 
-    / (delete by id)
-*/
-router.delete("/:id", verifyToken, (req, res) => {   
+/**
+ * Delete Quote
+ * 
+ * DELETE - /:id
+ */
+router.delete("/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
     quote.findByIdAndDelete(id)

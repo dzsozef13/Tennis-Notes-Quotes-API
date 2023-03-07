@@ -9,13 +9,18 @@ consumes:
   - "application/json"
 produces:
   - "application/json"
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "auth-token"
+    in: "header"
 
 paths:
   # User registration endpoint
   /auth/register:
     post:
       tags:
-        - "Users"
+        - "Auth"
       summary: "Registers a new user"
       description: "Registers a new user with the specified name, email, and password."
       operationId: "registerUser"
@@ -45,7 +50,7 @@ paths:
   /auth/login:
     post:
       tags:
-        - "Users"
+        - "Auth"
       summary: "Logs in a user"
       description: "Logs in a user with the specified email and password."
       operationId: "loginUser"
@@ -85,7 +90,7 @@ paths:
       description: "Creates a new quote with the specified content and author."
       operationId: "createQuote"
       security:
-        - BearerAuth: []
+        - api_key: []
       parameters:
         - in: "body"
           name: "body"
@@ -120,7 +125,8 @@ paths:
             type: "array"
         "500":
           description: "Server error"
-
+  
+  /quote/{id}:
     put:
       tags:
         - "Quotes"
@@ -128,26 +134,70 @@ paths:
       description: "Updates the specified quote with new content and/or author."
       operationId: "updateQuoteById"
       security:
-        - BearerAuth: []
+        - api_key: []
       parameters:
-        - in: "path"
-          name: "id"
-          description: "ID of quote to update"
+        - name: "id"
+          description: "ID of quote to be updated"
+          in: "path"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Updated values of quote"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              content:
+                type: "string"
+              author:
+                type: "string"
 
+    delete:
+      tags:
+          - "Quotes"
+      summary: "Delete a quote by ID"
+      description: "Deletes a quote from the database based on the provided ID parameter. Requires authorization with an API key."
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the quote to be deleted"
+          required: true
+          type: string
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: "Quote deleted successfully"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Quote deleted forever..."
+        400:
+          description: "Invalid request parameters"
+        401:
+          description: "Unauthorized - API key not provided or invalid"
+        404:
+          description: "Quote not found with the provided ID"
+        500:
+          description: "Internal server error - failed to delete quote"
+        
   /quote/author/{author}:
     get:
       tags:
-        - "Quotes"
-      summary: Get all quotes by author
-      description: Get a list of all quotes by the specified author
+        - "Quotes by Author"
+      summary: "Get all quotes by author"
+      description: "Get a list of all quotes by the specified author"
       produces:
         - application/json
       parameters:
-        - name: author
-          description: Author name or part of name
-          in: path
+        - name: "author"
+          description: "Author name or part of name"
+          in: "path"
           required: true
-          type: string
+          type: "string"
       responses:
         "200":
           description: "List of all quotes"
