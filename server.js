@@ -1,12 +1,20 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const { append } = require("express/lib/response");
 
 // App
 const app = express();
 
+//swagger
+const swaggerUi = require('swagger-ui-express');
+const yaml = require('yamljs');
+
+const swaggerDefinition = yaml.load('./swagger.yaml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+
 require("dotenv-flow").config();
+
+app.use(bodyParser.json());
 
 // Port
 const port = process.env.PORT || 4000;
@@ -15,12 +23,10 @@ const dbHost = process.env.DBHOST;
 // Routes
 
 const authRoutes = require("./routes/auth/auth");
-// const blogpostRoutes = require("./routes/blogpost/blogpost");
-// const quoteRoutes = require("./routes/quote/quote");
+const quoteRoutes = require("./routes/quote/quote");
 
 app.use("/auth", authRoutes);
-// app.use("/blogpost", blogpostRoutes);
-// app.use("/quote", quoteRoutes);
+app.use("/quote", quoteRoutes);
 
 app.listen(port, function() {
     console.log("Server is running at: " + port);

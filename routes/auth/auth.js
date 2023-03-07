@@ -10,10 +10,10 @@ const user = require('../../model/userSchema');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const { registerValidation, loginValidation } = require('./util/validation');
+const { registerValidation, loginValidation } = require('./util/auth+validation');
 
 /* 
-    /register 
+    /register
 */
 router.post('/register', async (req, res) => {
     // Validate user input
@@ -62,9 +62,12 @@ router.post('/login', async (req, res) => {
     );
     if (!validPassword) return res.status(400).send('Email or password is wrong');
   
-    // Create and assign a JWT token
+    // Add name and token to response
     const token = jwt.sign({ _id: currentUser._id }, process.env.TOKEN_SECRET);
-    res.header('auth-token', token).send(token);
-});  
+    res.header('auth-token', token).send({
+        "name": currentUser.name,
+        "token": token
+    });
+});
 
 module.exports = router;
