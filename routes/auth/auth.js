@@ -1,5 +1,5 @@
 /**
- * Authorisation routes
+ * Authorisation Routes
  * 
  * - User Registration
  * - User Validation

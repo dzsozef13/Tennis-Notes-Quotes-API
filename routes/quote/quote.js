@@ -1,5 +1,5 @@
 /**
- * Quote routes
+ * Quote Routes
  * 
  * - Get Single Quote
  * - Get All Quotes

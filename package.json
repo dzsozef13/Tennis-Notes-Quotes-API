@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "swagger-autogen": "node swagger.js"
   },
   "author": "Jozsef Adam Punk",
   "license": "ISC",
@@ -22,5 +23,8 @@
     "nodemon": "^2.0.21",
     "swagger-ui-express": "^4.6.2",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.23.1"
   }
 }
